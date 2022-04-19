@@ -720,7 +720,12 @@ class Krumo
         // file we're looking for
         $ret = "/" . str_replace($doc_root, "", $file, $ok);
         if (!$ok) {
-            return false;
+            // allow to works with userdir ie: http://server/~user/url
+            $doc_root = $_SERVER['CONTEXT_DOCUMENT_ROOT'];
+            $ret = $_SERVER['CONTEXT_PREFIX'] . str_replace($doc_root, "", $file, $ok);
+            if (!$ok) {
+                return false;
+            }
         }
 
         // If they want the path to the dir, only return the dir part
